@@ -6,9 +6,7 @@ const fs = require("fs");
 import keccak256 from "keccak256";
 
 // Function to hash data using keccak256
-const hashData = (data: string): Buffer => {
-  return keccak256(data);
-};
+const hashData = (data: object): Buffer => keccak256(JSON.stringify(data));
 
 async function main() {
   // Define the path to the CSV file
@@ -26,17 +24,31 @@ async function main() {
     .on("end", function () {
       console.log("CSV file successfully processed");
       // convert each record to a string and hash it
-      const leaves = results.map((record) => hashData(JSON.stringify(record)));
+      const leaves = results.map((record) => hashData(record));
 
       // create new merkle tree
       const tree = new MerkleTree(leaves, hashData, {
-        hashLeaves: true,
         sortPairs: true,
       });
 
       // get merkle root
-      const roothash = tree.getRoot().toString("hex");
+      const roothash = tree.getHexRoot();
+
       console.log(roothash);
+
+      // Example leaf to test proof
+      const targetData = {
+        address: "0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2",
+        amount: "130",
+      };
+
+      const targetLeaf = hashData(targetData);
+      const leafProof = tree.getHexProof(targetLeaf);
+
+      console.log(leafProof);
+      // Verify the proof
+      const isValid = tree.verify(leafProof, targetLeaf, roothash);
+      console.log("Proof is valid:", isValid);
     });
 }
 
