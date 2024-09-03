@@ -98,6 +98,13 @@ contract MerkleAirdrop {
         merkleRoot = _merkleRoot;
     }
 
+    // @user get current merkle proof
+    function getMerkleProof() external view returns (bytes32) {
+        sanityCheck(msg.sender);
+        onlyOwner();
+        return merkleRoot;
+    }
+
     // @user For owner to withdraw left over tokens
 
     /* @dev the withdrawal is only possible if the amount of tokens left in the contract
