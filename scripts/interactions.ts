@@ -1,22 +1,27 @@
 import { ethers } from "hardhat";
-const helpers = require("@nomicfoundation/hardhat-network-helpers");
+import * as dotenv from "dotenv";
+dotenv.config();
 
 async function main() {
   const cwtTokenAddress = "0x669eEe68Ef39E12D1b38d1f274BFc9aC46D771CB";
   const cwt = await ethers.getContractAt("IERC20", cwtTokenAddress);
 
   const merkleAirdropContractAddress =
-    "0x319b4Ab6f8DBA2AF7DF5b7e9872b0616ecC3299e";
+    "0x55bBddDd171e681D528cc6d813DFceA63113646d";
   const merkleAirdrop = await ethers.getContractAt(
     "MerkleAirdrop",
     merkleAirdropContractAddress
   );
+
 
   // returns the balance of CWT tokens in the contract that will be airdropped
   const contractBalance = await merkleAirdrop.getContractBalance();
   console.log(contractBalance);
 
   // test user
+  const userPrivateKey = `${process.env.TEST_PRIVATE_KEY}`; // Replace with your private key
+  const userWallet = new ethers.Wallet(userPrivateKey, ethers.provider);
+
   const USER = {
     address: "0xa6B1feB40D1c8eeAD5AFD6f7372E02B637F142FA",
     amount: "1800000000000000000000",
@@ -34,6 +39,11 @@ async function main() {
   const merkleRoot =
     "0x29c08bc8bf7d3a0ed4b1dd16063389608cf9dec220f1584e32d317c2041e1fa4";
 
+  const contractMerkleRoot = await merkleAirdrop.getMerkleProof();
+  console.log(
+    "Contract merkle proof is valid: ",
+    contractMerkleRoot == merkleRoot
+  );
   // merkle proof gotten from merkle.ts
   const merkleProof = [
     "0x5a14ec3b90c5dab0d3640d893dcb87ff30bae272bbf7eb37b520d7a86d098bf4",
@@ -43,9 +53,10 @@ async function main() {
   ];
 
   try {
-    const claimTx = await merkleAirdrop.claimAirdrop(USER.amount, merkleProof);
+    // const claimTx = await merkleAirdrop.claimAirdrop(USER.amount, merkleProof);
+    const claimTx = await merkleAirdrop.connect(userWallet).claimAirdrop(USER.amount, merkleProof);
 
-    console.log(`Transaction sent: ${claimTx}`);
+    console.log(`Transaction sent` + claimTx);
     // // Wait for the transaction to be mined
     claimTx.wait();
 
