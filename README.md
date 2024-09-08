@@ -45,7 +45,7 @@ This project provides a Solidity smart contract `MerkleAirdrop` and a JavaScript
 
    Running this script, you will get both the Merkle root and the Merkle proof. You need to copy both of them.
 
-5. **Deploying the MerkleAirdrop Contract**
+5. **Deploying the MerkleAirdrop Contract** <br>
    Go to ignition/modules/MerkleAirdrop, to deploy this contract, we need to pass in the tokenAddress and Merkle root as arguments in the constructor.
 
    ```bash
@@ -66,8 +66,8 @@ The command above deploys the contract with the id: Airdrop-deployment. We can e
     npx hardhat ignition verify Airdrop-deployment
    ```
 
-6. **Generating merkle Proof**
-   Step 4 explains how to generate Merkle proof, but the idea is to go to the scripts/merkle.ts and change the content of targetData. Also, please ensure that       your data is part of the data in the CSV or you will get an invalid proof error.
+6. **Generating merkle Proof** <br>
+   `Step 4` explains how to generate Merkle proof, but the idea is to go to the scripts/merkle.ts and change the content of targetData. Also, please ensure       that your data is part of the data in the CSV or you will get an invalid proof error.
 
 7. **Assumptions and Limitations**
    - **Assumptions**
