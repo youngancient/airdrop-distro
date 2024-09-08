@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project provides a Solidity smart contract `MerkleAirdrop` and a JavaScript script `merkle.ts` for managing token airdrops using Merkle trees. This README includes instructions for setting up and running the `merkle.t# Sample Aidrop Distribution
+This project provides a Solidity smart contract `MerkleAirdrop` and a JavaScript script `merkle.ts` for managing token airdrops using Merkle trees. This README includes instructions for setting up and running the `merkle.ts` Sample Airdrop Distribution
 
 ## Setup and Running `merkle.ts`
 
