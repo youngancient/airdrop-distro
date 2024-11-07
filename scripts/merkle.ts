@@ -30,7 +30,7 @@ async function main() {
       const tree = new MerkleTree(results, keccak256, {
         sortPairs: true,
       });
-
+      
       // get merkle root
       const roothash = tree.getHexRoot();
 
