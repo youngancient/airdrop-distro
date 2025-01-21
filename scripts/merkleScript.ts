@@ -35,5 +35,15 @@ export function generateMerkleTree(entities: AirdropEntity[]) {
     return tree.getHexProof(leaf);
   });
 
-  return { rootHash, proofs };
+  // Generate output which combines proof, amount and merkle proof for each entity
+  const output = entities.map((entity, index) => {
+    const leaf = leaves[index];
+    return {
+      address: entity.address,
+      amount: entity.amount,
+      proofs: tree.getHexProof(leaf),
+    };
+  });
+
+  return { rootHash, proofs, output };
 }

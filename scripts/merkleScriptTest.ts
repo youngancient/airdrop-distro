@@ -20,16 +20,11 @@ async function main() {
     { address: "0xf9056af4cd1211dd9638e9979e99a43de830779e", amount: "320000000000000000000" }
   ];
 
-  const { rootHash, proofs } = generateMerkleTree(entities);
+  const { rootHash, proofs, output } = generateMerkleTree(entities);
   console.log("Merkle Root:", rootHash);
 
   // Display proofs for each entity
-  entities.forEach((entity, index) => {
-    console.log(`Entity ${index + 1}:`);
-    console.log("Address:", entity.address);
-    console.log("Amount:", entity.amount);
-    console.log("Proof:", proofs[index]);
-  });
+  console.log("output:", output);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
