@@ -16,6 +16,7 @@ async function main() {
   ];
 
   const POAP_CONTRACT_ADDRESS = "0xe027a186136c8d7a27a2a9f2a78c0df58c742e61";
+  const [signer] = await ethers.getSigners();
 
   const poapContract = await ethers.getContractAt(
     POAP_ABI,
@@ -38,6 +39,24 @@ async function main() {
   // Call the checkEligibility function
   const isEligible = await poapContract.checkEligibility(merkleProof);
   console.log("Eligibility:", isEligible);
+
+  // call claim tx
+  const message = `Claim POAP for ${signer.address}`;
+  const msgBytes = ethers.toUtf8Bytes(message);
+  const digest = ethers.keccak256(msgBytes);
+
+  const signature = await signer.signMessage(msgBytes);
+  console.log("signature -> ", signature);
+  
+  const tx = await poapContract["claimAirdrop(bytes32[],bytes32,bytes)"](
+    merkleProof,
+    digest,
+    signature
+  );
+  await tx.wait();
+
+  console.log("Claim successful!");
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere
