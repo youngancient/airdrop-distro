@@ -15,6 +15,10 @@ const config: HardhatUserConfig = {
       accounts: [process.env.ACCOUNT_PRIVATE_KEY!],
       gasPrice: 1000000000,
     },
+    sonic: {
+      url: process.env.SONIC_RPC_URL,
+      accounts: [process.env.ACCOUNT_PRIVATE_KEY!]
+    }
   },
   etherscan: {
     // Use "123" as a placeholder, because Blockscout doesn't need a real API key, and Hardhat will complain if this property isn't set.
