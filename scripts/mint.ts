@@ -15,7 +15,7 @@ async function main() {
     "function supportsInterface(bytes4 interfaceId) view returns (bool)",
   ];
 
-  const POAP_CONTRACT_ADDRESS = "0xe027a186136c8d7a27a2a9f2a78c0df58c742e61";
+  const POAP_CONTRACT_ADDRESS = "0x90b1fca36a2754f12f43b0061a93c8c76f082964";
   const [signer] = await ethers.getSigners();
 
   const poapContract = await ethers.getContractAt(
@@ -31,9 +31,9 @@ async function main() {
 
   //   let's make a claim tx
   const merkleProof = [
-    '0xa7409058568815d08a7ad3c7d4fd44cf1dec90c620cb31e55ad24c654f7ba34f',
-    '0xcef861ae49469220eac9703d1077fa45b0a3ae990e4a8a7d325472f93cbca30e',
-    '0x342fe9e468d733b47cb9a9ef127d55cf1f280f4c19efe6596ecf8e40d1e0fb39'
+    '0x708e7cb9a75ffb24191120fba1c3001faa9078147150c6f2747569edbadee751',
+    '0x8cdd6608c14a222369d97956b504f94500a33c673fd156f8f2da7f980260c91c',
+    '0x79ec436321e0ee4d3657f6b4c44573e6af12266adc6fdb29f3f7de915ce4975d'
   ];
 
   // Call the checkEligibility function
@@ -45,9 +45,15 @@ async function main() {
   const msgBytes = ethers.toUtf8Bytes(message);
   const digest = ethers.keccak256(msgBytes);
 
-  const signature = await signer.signMessage(msgBytes);
+  const wallet = new ethers.Wallet(process.env.ACCOUNT_PRIVATE_KEY!);
+
+  const sig = wallet.signingKey.sign(digest);
+
+  // const signature = await signer.signMessage(digest);
+  const signature = ethers.concat([sig.r, sig.s, ethers.toBeHex(sig.v, 1)]);
+
   console.log("signature -> ", signature);
-  
+
   const tx = await poapContract["claimAirdrop(bytes32[],bytes32,bytes)"](
     merkleProof,
     digest,
@@ -56,7 +62,6 @@ async function main() {
   await tx.wait();
 
   console.log("Claim successful!");
-
 }
 
 // We recommend this pattern to be able to use async/await everywhere
