@@ -94,7 +94,7 @@ async function main() {
   // const { rootHash, proofs, output } = generateMerkleTree(entities);
   // console.log("Merkle Root:", rootHash);
   // // Display proofs for each entity
-  test2();
+  test();
 }
 
 // We recommend this pattern to be able to use async/await everywhere

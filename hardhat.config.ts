@@ -17,13 +17,18 @@ const config: HardhatUserConfig = {
     },
     sonic: {
       url: process.env.SONIC_RPC_URL,
-      accounts: [process.env.ACCOUNT_PRIVATE_KEY!]
-    }
+      accounts: [process.env.ACCOUNT_PRIVATE_KEY!],
+    },
+    rootstock: {
+      url: process.env.ROOTSTOCK_TESTNET_RPC_URL!,
+      accounts: [process.env.ACCOUNT_PRIVATE_KEY!],
+    },
   },
   etherscan: {
     // Use "123" as a placeholder, because Blockscout doesn't need a real API key, and Hardhat will complain if this property isn't set.
     apiKey: {
       "lisk-sepolia": "123",
+      rootstock: "123",
     },
     customChains: [
       {
@@ -32,6 +37,14 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://sepolia-blockscout.lisk.com/api",
           browserURL: "https://sepolia-blockscout.lisk.com/",
+        },
+      },
+      {
+        network: "rootstock",
+        chainId: 31,
+        urls: {
+          apiURL: "https://rootstock-testnet.blockscout.com/api/",
+          browserURL: "https://rootstock-testnet.blockscout.com/",
         },
       },
     ],

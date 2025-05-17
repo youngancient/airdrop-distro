@@ -6,7 +6,7 @@ export const stripLeadingZeros = (address: string): string => {
 };
 
 async function main() {
-  const FACTORY_CONTRACT_ADDRESS = "0x9a4346DdA58198D663F94c9Bd3eD95374336EAb2";
+  const FACTORY_CONTRACT_ADDRESS = "0x3127d9BCcc6Be2d2Db6C9BAa5DA714c3386054e9";
   const factory_abi = [
     // "function createSonikPoap(string _name, string _symbol, string _baseURI, bytes32 _merkleRoot, address _nftAddress, uint256 _claimTime, uint256 _noOfClaimers) external",
     // "function createSonikPoap(string _name, string _symbol, string _baseURI, bytes32 _merkleRoot, address _nftAddress, uint256 _claimTime, uint256 _noOfClaimers, bool _isCollection) external",
@@ -31,14 +31,21 @@ async function main() {
     "0x5555555444444444444444444444444444444445",
   ];
   const { rootHash, output } = generateMerkleTreeFromAddresses(addresses);
+
   console.log(output);
-  const name = "SonicDash25";
-  const symbol = "SDA";
+  const name = "SonicTheHedgehog";
+  const symbol = "STH";
   const baseURI =
     "ipfs://bafkreidolt4hcw7zbo2cp745g3zyommfz4e43g4pgdevu4ade2ujp2vgma";
   const merkleRoot = rootHash;
   const nftAddress = ethers.ZeroAddress;
   const noOfClaimers = addresses.length;
+
+  // const estimateGas = await poapFactoryContract[
+  //   "createSonikPoap(string,string,string,bytes32,address,uint256)"
+  // ].estimateGas(name, symbol, baseURI, merkleRoot, nftAddress, noOfClaimers);
+
+  // console.log(Number(estimateGas));
 
   const tx = await poapFactoryContract[
     "createSonikPoap(string,string,string,bytes32,address,uint256)"
@@ -50,7 +57,7 @@ async function main() {
     // console.log(reciept);
     // Find the emitted event with the new contract's address
     const eventLogs = reciept.logs;
-    
+
     if (eventLogs) {
       const deployedContractAddress = eventLogs[0].topics[3];
       console.log(
